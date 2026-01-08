@@ -9,11 +9,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udyaa.rupiahpay.dto.CreateAkun;
 import com.udyaa.rupiahpay.dto.LoginAkun;
+import com.udyaa.rupiahpay.entity.Akun;
 import com.udyaa.rupiahpay.service.AkunService;
 import com.udyaa.rupiahpay.service.JwtService;
 
@@ -57,8 +59,11 @@ public class AkunController {
     }
     
     @GetMapping
-    public ResponseEntity<String> getUser() {
-        return ResponseEntity.ok("Yess");
+    public ResponseEntity<Akun> getUser(@RequestHeader("Authorization") String token) {
+        String email = jwtService.extractUsername(token.substring(7));
+        Akun akun = akunService.getAccountByEmail(email);
+
+        return ResponseEntity.ok(akun);
     }
     
 }
