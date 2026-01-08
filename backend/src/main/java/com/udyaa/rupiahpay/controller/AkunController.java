@@ -3,16 +3,22 @@ package com.udyaa.rupiahpay.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udyaa.rupiahpay.dto.CreateAkun;
+import com.udyaa.rupiahpay.dto.LoginAkun;
 import com.udyaa.rupiahpay.service.AkunService;
+import com.udyaa.rupiahpay.service.JwtService;
 
 import lombok.AllArgsConstructor;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -20,16 +26,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/akun")
 public class AkunController {
     @Autowired
-    private final AkunService service;
+    private final AkunService akunService;
+    @Autowired
+    private final JwtService jwtService;
+    @Autowired
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/create")
-    public ResponseEntity<String> createAkun(@RequestBody CreateAkun akun) {
+    @PostMapping("/auth/create")
+    public ResponseEntity<String> create(@RequestBody CreateAkun akun) {
         try {
-            service.createAccount(akun);
+            akunService.createAccount(akun);
             return new ResponseEntity<>(HttpStatus.OK); 
         } catch(Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
+    }
+    
+    @PostMapping("/auth/login")
+    public ResponseEntity<String> login(@RequestBody LoginAkun akun) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(akun.getEmail(), akun.getPassword())
+        );
+
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(akun.getEmail());
+            return ResponseEntity.ok(token);
+        } else {
+            return new ResponseEntity<>("Invalid User Requests", HttpStatus.UNAUTHORIZED);
+        }
+    }
+    
+    @GetMapping
+    public ResponseEntity<String> getUser() {
+        return ResponseEntity.ok("Yess");
     }
     
 }
