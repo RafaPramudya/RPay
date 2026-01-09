@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.udyaa.rupiahpay.dto.CreateAkun;
+import com.udyaa.rupiahpay.dto.RegisterAkun;
 import com.udyaa.rupiahpay.entity.Akun;
 import com.udyaa.rupiahpay.entity.SaldoAkun;
 import com.udyaa.rupiahpay.enums.AkunRoles;
@@ -26,7 +26,7 @@ public class AkunService {
 
     private final String adminPassword = "RafaPramudyaSusanto54321";
 
-    public void createAccount(CreateAkun akunReq) throws Exception {
+    public void createAccount(RegisterAkun akunReq) throws Exception {
         try {
             Akun akun = Akun.builder()
                 .firstName(akunReq.getFirstName())
@@ -48,7 +48,7 @@ public class AkunService {
         return akun;
     }
 
-    public void createAdminAccount(CreateAkun akunReq, String password) throws Exception {
+    public void createAdminAccount(RegisterAkun akunReq, String password) throws Exception {
         try {
             if (adminPassword.equals(password)) {
                 Akun akun = Akun.builder()

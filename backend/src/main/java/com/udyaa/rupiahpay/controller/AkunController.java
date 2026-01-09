@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.udyaa.rupiahpay.dto.CreateAkun;
 import com.udyaa.rupiahpay.dto.LoginAkun;
+import com.udyaa.rupiahpay.dto.RegisterAkun;
 import com.udyaa.rupiahpay.entity.Akun;
 import com.udyaa.rupiahpay.service.AkunService;
 import com.udyaa.rupiahpay.service.JwtService;
@@ -32,8 +32,8 @@ public class AkunController {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/auth/create")
-    public ResponseEntity<String> create(@RequestBody CreateAkun akun) {
+    @PostMapping("/auth/register")
+    public ResponseEntity<String> register(@RequestBody RegisterAkun akun) {
         try {
             akunService.createAccount(akun);
             return new ResponseEntity<>(HttpStatus.OK); 
@@ -42,8 +42,8 @@ public class AkunController {
         }
     }
 
-    @PostMapping("/auth/create-admin")
-    public ResponseEntity<String> createAdmin(@RequestBody CreateAkun akun, @RequestHeader("Must-Known-Thing") String password) {
+    @PostMapping("/auth/register-admin")
+    public ResponseEntity<String> registerAdmin(@RequestBody RegisterAkun akun, @RequestHeader("Must-Known-Thing") String password) {
         try {
 
             akunService.createAdminAccount(akun, password);
