@@ -1,6 +1,7 @@
 package com.udyaa.rupiahpay.repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.udyaa.rupiahpay.entity.Akun;
 
 @Repository
-public interface AkunRepository extends JpaRepository<Akun, Long> {
+public interface AkunRepository extends JpaRepository<Akun, UUID> {
     Optional<Akun> findByEmail(String email);
 }

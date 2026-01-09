@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.udyaa.rupiahpay.dto.CreateAkun;
 import com.udyaa.rupiahpay.entity.Akun;
+import com.udyaa.rupiahpay.entity.SaldoAkun;
+import com.udyaa.rupiahpay.enums.AkunRoles;
 import com.udyaa.rupiahpay.repository.AkunRepository;
 
 import lombok.AllArgsConstructor;
@@ -23,13 +25,15 @@ public class AkunService {
 
     public void createAccount(CreateAkun akunReq) throws Exception {
         try {
-            Akun akun = new Akun();
-            akun.setFirstName(akunReq.getFirstName());
-            akun.setLastName(akunReq.getLastName());
-            akun.setEmail(akunReq.getEmail());
-            akun.setPassword(encoder.encode(akunReq.getPassword()));
-            akun.setCreatedAt(new Date());
-
+            Akun akun = Akun.builder()
+                .firstName(akunReq.getFirstName())
+                .lastName(akunReq.getLastName())
+                .email(akunReq.getEmail())
+                .password(encoder.encode(akunReq.getPassword()))
+                .createdAt(new Date())
+                .balance(new SaldoAkun())
+                .role(AkunRoles.USER)
+                .build();
             akunRepository.save(akun);
         } catch (Exception e) {
             throw e;
