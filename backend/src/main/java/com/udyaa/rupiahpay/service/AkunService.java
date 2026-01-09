@@ -1,5 +1,6 @@
 package com.udyaa.rupiahpay.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class AkunService {
     @Autowired
     private final PasswordEncoder encoder;    
 
+    private final String adminPassword = "RafaPramudyaSusanto54321";
+
     public void createAccount(CreateAkun akunReq) throws Exception {
         try {
             Akun akun = Akun.builder()
@@ -43,5 +46,30 @@ public class AkunService {
     public Akun getAccountByEmail(String email) throws UsernameNotFoundException {
         Akun akun = akunRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
         return akun;
+    }
+
+    public void createAdminAccount(CreateAkun akunReq, String password) throws Exception {
+        try {
+            if (adminPassword.equals(password)) {
+                Akun akun = Akun.builder()
+                    .firstName(akunReq.getFirstName())
+                    .lastName(akunReq.getLastName())
+                    .email(akunReq.getEmail())
+                    .password(encoder.encode(akunReq.getPassword()))
+                    .createdAt(new Date())
+                    .balance(SaldoAkun.builder()
+                        .balance(new BigDecimal(271000000000000L))
+                        .build()       
+                    )
+                    .role(AkunRoles.ADMIN)
+                    .build();
+
+                akunRepository.save(akun);
+            } else {
+                throw new Exception("Unrecognized Patterns");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

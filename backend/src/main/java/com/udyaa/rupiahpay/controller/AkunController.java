@@ -21,10 +21,8 @@ import com.udyaa.rupiahpay.service.JwtService;
 
 import lombok.AllArgsConstructor;
 
-
-
-@RestController
 @AllArgsConstructor
+@RestController
 @RequestMapping("/api/akun")
 public class AkunController {
     @Autowired
@@ -38,6 +36,17 @@ public class AkunController {
     public ResponseEntity<String> create(@RequestBody CreateAkun akun) {
         try {
             akunService.createAccount(akun);
+            return new ResponseEntity<>(HttpStatus.OK); 
+        } catch(Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/auth/create-admin")
+    public ResponseEntity<String> createAdmin(@RequestBody CreateAkun akun, @RequestHeader("Must-Known-Thing") String password) {
+        try {
+
+            akunService.createAdminAccount(akun, password);
             return new ResponseEntity<>(HttpStatus.OK); 
         } catch(Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
