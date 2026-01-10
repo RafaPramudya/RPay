@@ -1,5 +1,7 @@
 package com.udyaa.rupiahpay.entity;
 
+import java.math.BigDecimal;
+
 import com.udyaa.rupiahpay.enums.TransactionType;
 
 import jakarta.persistence.Entity;
@@ -34,10 +36,14 @@ public class Transaction {
     @JoinColumn(name="rekening", nullable=false)
     private Rekening rekening;
 
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
+
+    private BigDecimal beforeBalance;
+    private BigDecimal afterBalance;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="transfer")
     private Transfer transfer;
 
-    @Enumerated(EnumType.STRING)
-    private TransactionType type;
 }

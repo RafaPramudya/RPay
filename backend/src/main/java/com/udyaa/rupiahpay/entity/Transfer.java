@@ -35,17 +35,18 @@ public class Transfer {
     private Long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="sender_account", nullable=false)
+    @JoinColumn(name="sender_account")
     Rekening sender;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="receiver_account", nullable=false)
+    @JoinColumn(name="receiver_account")
     Rekening receiver;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
     private Date initiatedAt;
     
+    @Column(length=64)
     @Enumerated(EnumType.STRING)
     private TransferStatus status;
     private String notes;

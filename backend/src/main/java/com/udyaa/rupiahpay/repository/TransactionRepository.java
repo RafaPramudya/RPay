@@ -10,5 +10,5 @@ import com.udyaa.rupiahpay.entity.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long>{
     @Query("SELECT t FROM Transaction t WHERE t.rekening.id = :id")
-    List<Transaction> findAllSourcebyRekId(@Param("id") Long id);
+    List<Transaction> findAllRekeningbyId(@Param("id") Long id);
 }

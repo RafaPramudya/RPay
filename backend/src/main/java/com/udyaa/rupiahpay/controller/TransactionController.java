@@ -1,6 +1,9 @@
 package com.udyaa.rupiahpay.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -8,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udyaa.rupiahpay.dto.RequestTransfer;
+import com.udyaa.rupiahpay.dto.ResponseTransaction;
 import com.udyaa.rupiahpay.service.JwtService;
 import com.udyaa.rupiahpay.service.TransactionService;
 
 import lombok.AllArgsConstructor;
+
 
 @AllArgsConstructor
 @RestController
@@ -27,4 +32,13 @@ public class TransactionController {
 
         return ResponseEntity.ok(null);
     } 
+
+    @GetMapping("/transactions")
+    public ResponseEntity<List<ResponseTransaction>> getTransactions(@RequestHeader("Authorization") String token) {
+        String email = jwtService.extractUsername(token.substring(7));
+        List<ResponseTransaction> transactions = transactionService.getTransactionHistory(email);
+
+        return ResponseEntity.ok(transactions);
+    }
+    
 }
