@@ -19,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Builder
-public class SaldoAkun {
+public class Rekening {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id; 

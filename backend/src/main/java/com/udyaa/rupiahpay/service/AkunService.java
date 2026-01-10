@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.udyaa.rupiahpay.dto.RegisterAkun;
 import com.udyaa.rupiahpay.entity.Akun;
-import com.udyaa.rupiahpay.entity.SaldoAkun;
+import com.udyaa.rupiahpay.entity.Rekening;
 import com.udyaa.rupiahpay.enums.AkunRoles;
 import com.udyaa.rupiahpay.repository.AkunRepository;
 
@@ -34,7 +34,7 @@ public class AkunService {
                 .email(akunReq.getEmail())
                 .password(encoder.encode(akunReq.getPassword()))
                 .createdAt(new Date())
-                .balance(new SaldoAkun())
+                .balance(new Rekening())
                 .role(AkunRoles.USER)
                 .build();
             akunRepository.save(akun);
@@ -57,7 +57,7 @@ public class AkunService {
                     .email(akunReq.getEmail())
                     .password(encoder.encode(akunReq.getPassword()))
                     .createdAt(new Date())
-                    .balance(SaldoAkun.builder()
+                    .balance(Rekening.builder()
                         .balance(new BigDecimal(271000000000000L))
                         .build()       
                     )

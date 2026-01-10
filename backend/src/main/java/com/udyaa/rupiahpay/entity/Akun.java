@@ -55,7 +55,7 @@ public class Akun implements UserDetails {
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="id")
-    private SaldoAkun balance;
+    private Rekening balance;
 
     @Override
     public String getUsername() {
