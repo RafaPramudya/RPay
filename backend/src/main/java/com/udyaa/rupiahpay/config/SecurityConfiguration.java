@@ -36,7 +36,7 @@ public class SecurityConfiguration {
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/akun/auth/**").permitAll()
-                .requestMatchers("/admin", "/admin/**").hasRole(AkunRole.ADMIN.name())
+                .requestMatchers("/api/admin", "/api/admin/**").hasRole(AkunRole.ADMIN.name())
                 .anyRequest().authenticated()
             )
             .userDetailsService(userDetailsService)

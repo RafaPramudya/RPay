@@ -20,7 +20,7 @@ public class TransactionService {
     private final RekeningRepository rekeningRepository;
 
     @Transactional
-    public void deposit(ModifyRekening request) throws Exception {
+    public void deposit(ModifyRekening request) {
         Rekening rekening = rekeningRepository.findByRekId(request.getRekId())
             .orElseThrow(() -> new UsernameNotFoundException(request.getRekId()));
         
