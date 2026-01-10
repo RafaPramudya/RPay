@@ -13,7 +13,8 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModifyRekening {
+public class RequestTransfer {
     private String rekId;
     private BigDecimal amount;
+    private String notes;
 }

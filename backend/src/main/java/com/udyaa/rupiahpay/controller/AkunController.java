@@ -70,7 +70,7 @@ public class AkunController {
     @GetMapping
     public ResponseEntity<ResponseAkun> getUser(@RequestHeader("Authorization") String token) {
         String email = jwtService.extractUsername(token.substring(7));
-        ResponseAkun akun = akunService.getAccountByEmail(email);
+        ResponseAkun akun = akunService.getResponseAccountByEmail(email);
 
         return ResponseEntity.ok(akun);
     }

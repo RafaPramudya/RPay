@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.udyaa.rupiahpay.dto.ModifyRekening;
+import com.udyaa.rupiahpay.dto.RequestTransfer;
 import com.udyaa.rupiahpay.dto.ResponseAkun;
 import com.udyaa.rupiahpay.service.AkunService;
 import com.udyaa.rupiahpay.service.TransactionService;
@@ -25,14 +25,14 @@ public class AdminController {
 
     @GetMapping("/user")
     public ResponseEntity<ResponseAkun> getMethodName(@RequestBody String email) {
-        ResponseAkun akun = akunService.getAccountByEmail(email);
+        ResponseAkun akun = akunService.getResponseAccountByEmail(email);
 
         return ResponseEntity.ok(akun);
     }
 
 
     @PostMapping("/deposit")
-    public ResponseEntity<?> depositUang(@RequestBody ModifyRekening request) {
+    public ResponseEntity<?> depositUang(@RequestBody RequestTransfer request) {
         try {
             transactionService.deposit(request);
             return ResponseEntity.ok(null);
@@ -42,7 +42,7 @@ public class AdminController {
     }
     
     @PostMapping("/withdraw")
-    public ResponseEntity<?> postMethodName(@RequestBody ModifyRekening request) {
+    public ResponseEntity<?> postMethodName(@RequestBody RequestTransfer request) {
         try {
             transactionService.withdraw(request);
             return ResponseEntity.ok(null);

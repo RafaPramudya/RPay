@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.udyaa.rupiahpay.dto.RegisterAkun;
 import com.udyaa.rupiahpay.dto.ResponseAkun;
@@ -50,7 +51,8 @@ public class AkunService {
         }
     }
 
-    public ResponseAkun getAccountByEmail(String email) throws UsernameNotFoundException {
+    @Transactional(readOnly=true)
+    public ResponseAkun getResponseAccountByEmail(String email) throws UsernameNotFoundException {
         Akun akun = akunRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
         Rekening rekening = akun.getBalance();
 
@@ -72,6 +74,12 @@ public class AkunService {
             .build();
 
         return response;
+    }
+
+    @Transactional(readOnly=true)
+    public Akun getAccountByEmail(String email) {
+        Akun akun = akunRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        return akun;
     }
 
     public void createAdminAccount(RegisterAkun akunReq, String password) throws Exception {
