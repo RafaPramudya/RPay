@@ -1,6 +1,6 @@
 package com.udyaa.rupiahpay.enums;
 
-public enum AkunRoles {
+public enum AkunRole {
     ADMIN,
     USER
 }

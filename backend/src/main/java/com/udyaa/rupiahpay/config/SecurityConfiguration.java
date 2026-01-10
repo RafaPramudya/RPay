@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.udyaa.rupiahpay.enums.AkunRoles;
+import com.udyaa.rupiahpay.enums.AkunRole;
 import com.udyaa.rupiahpay.filter.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class SecurityConfiguration {
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/akun/auth/**").permitAll()
-                .requestMatchers("/admin", "/admin/**").hasRole(AkunRoles.ADMIN.name())
+                .requestMatchers("/admin", "/admin/**").hasRole(AkunRole.ADMIN.name())
                 .anyRequest().authenticated()
             )
             .userDetailsService(userDetailsService)

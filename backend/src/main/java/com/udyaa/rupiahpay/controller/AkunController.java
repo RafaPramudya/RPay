@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.udyaa.rupiahpay.dto.LoginAkun;
 import com.udyaa.rupiahpay.dto.RegisterAkun;
-import com.udyaa.rupiahpay.entity.Akun;
+import com.udyaa.rupiahpay.dto.ResponseAkun;
 import com.udyaa.rupiahpay.service.AkunService;
 import com.udyaa.rupiahpay.service.JwtService;
 
@@ -68,9 +68,9 @@ public class AkunController {
     }
     
     @GetMapping
-    public ResponseEntity<Akun> getUser(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ResponseAkun> getUser(@RequestHeader("Authorization") String token) {
         String email = jwtService.extractUsername(token.substring(7));
-        Akun akun = akunService.getAccountByEmail(email);
+        ResponseAkun akun = akunService.getAccountByEmail(email);
 
         return ResponseEntity.ok(akun);
     }

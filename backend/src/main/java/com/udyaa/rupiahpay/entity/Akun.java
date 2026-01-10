@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.udyaa.rupiahpay.enums.AkunRoles;
+import com.udyaa.rupiahpay.enums.AkunRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,6 +42,8 @@ public class Akun implements UserDetails {
 
     @Column(name = "first_name", nullable=false)
     private String firstName;
+    @Column(name = "middel_name")
+    private String middleName;
     @Column(name = "last_name", nullable=false)
     private String lastName;
     @Column(nullable=false, unique=true)
@@ -51,7 +53,7 @@ public class Akun implements UserDetails {
     @Column(name = "created_at")
     private Date createdAt;
     @Enumerated(EnumType.STRING)
-    private AkunRoles role;
+    private AkunRole role;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="id")

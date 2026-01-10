@@ -9,9 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.udyaa.rupiahpay.dto.RegisterAkun;
+import com.udyaa.rupiahpay.dto.ResponseAkun;
+import com.udyaa.rupiahpay.dto.RestrictedResponseRekening;
 import com.udyaa.rupiahpay.entity.Akun;
 import com.udyaa.rupiahpay.entity.Rekening;
-import com.udyaa.rupiahpay.enums.AkunRoles;
+import com.udyaa.rupiahpay.enums.AkunRole;
 import com.udyaa.rupiahpay.repository.AkunRepository;
 
 import lombok.AllArgsConstructor;
@@ -34,18 +36,42 @@ public class AkunService {
                 .email(akunReq.getEmail())
                 .password(encoder.encode(akunReq.getPassword()))
                 .createdAt(new Date())
-                .balance(new Rekening())
-                .role(AkunRoles.USER)
+                .role(AkunRole.USER)
                 .build();
+            
+            akun.setBalance(Rekening.builder()
+                .owner(akun)
+                .build()
+            );
+
             akunRepository.save(akun);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public Akun getAccountByEmail(String email) throws UsernameNotFoundException {
+    public ResponseAkun getAccountByEmail(String email) throws UsernameNotFoundException {
         Akun akun = akunRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
-        return akun;
+        Rekening rekening = akun.getBalance();
+
+        ResponseAkun response = ResponseAkun.builder()
+            .uuid(akun.getUuid())
+            .firstName(akun.getFirstName())
+            .lastName(akun.getLastName())
+            .email(akun.getEmail())
+            .password(akun.getPassword())
+            .createdAt(akun.getCreatedAt())
+            .role(akun.getRole())
+            .balance(
+                RestrictedResponseRekening.builder()
+                .rekId(rekening.getRekId())
+                .balance(rekening.getBalance())
+                .currency(rekening.getCurrency())
+                .build()
+            )
+            .build();
+
+        return response;
     }
 
     public void createAdminAccount(RegisterAkun akunReq, String password) throws Exception {
@@ -57,13 +83,14 @@ public class AkunService {
                     .email(akunReq.getEmail())
                     .password(encoder.encode(akunReq.getPassword()))
                     .createdAt(new Date())
-                    .balance(Rekening.builder()
-                        .balance(new BigDecimal(271000000000000L))
-                        .build()       
-                    )
-                    .role(AkunRoles.ADMIN)
+                    .role(AkunRole.ADMIN)
                     .build();
 
+                akun.setBalance(Rekening.builder()
+                    .owner(akun)
+                    .balance(new BigDecimal(271000000000000L))
+                    .build()
+                );
                 akunRepository.save(akun);
             } else {
                 throw new Exception("Unrecognized Patterns");
