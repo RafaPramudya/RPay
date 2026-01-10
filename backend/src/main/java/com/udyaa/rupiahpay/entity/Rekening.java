@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,8 +22,16 @@ import lombok.Setter;
 @Builder
 public class Rekening {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id; 
+    @GeneratedValue(generator="rekening-gen")
+    @SequenceGenerator(
+        name="rekening-gen",
+        sequenceName="rekening_gen",
+        allocationSize= 50
+    )
+    private Long id;
+
+    @Column(unique=true, length=32, nullable=false)
+    private String rekId; 
 
     @Builder.Default
     @Column(precision=19, scale=2)
@@ -31,4 +40,9 @@ public class Rekening {
     @Builder.Default
     @Column(length=3)
     private String currency = "IDR";
+
+    @PrePersist
+    public void generateRekeningId() {
+        this.rekId = "REK-" + String.format("%016d", id);  
+    }
 }
