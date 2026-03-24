@@ -1,0 +1,39 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: DockerFile
+    ports:
+      - "42069:42069"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend-net
+    
+  db:
+    image: postgres:18.3-trixie
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=udyassnt321
+      - POSTGRES_DB=rpay
+    volumes:
+      - postgres_data:/var/lib/postgresql/18.3/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend-net
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge
