@@ -42,9 +42,9 @@ public class Akun implements UserDetails {
 
     @Column(name = "first_name", nullable=false)
     private String firstName;
-    @Column(name = "middel_name")
+    @Column(name = "middle_name")
     private String middleName;
-    @Column(name = "last_name", nullable=false)
+    @Column(name = "last_name")
     private String lastName;
     @Column(nullable=false, unique=true)
     private String email;

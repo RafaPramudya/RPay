@@ -42,6 +42,7 @@ public class AkunService {
             
             akun.setBalance(Rekening.builder()
                 .owner(akun)
+                .balance(new BigDecimal(10000L))
                 .build()
             );
 
@@ -96,7 +97,7 @@ public class AkunService {
 
                 akun.setBalance(Rekening.builder()
                     .owner(akun)
-                    .balance(new BigDecimal(271000000000000L))
+                    .balance(new BigDecimal(10000000000L))
                     .build()
                 );
                 akunRepository.save(akun);
